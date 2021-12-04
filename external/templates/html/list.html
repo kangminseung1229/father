@@ -22,19 +22,23 @@
 
 <body>
     
+    <span class="fs-4" th:text="|${year}년 ${month}월|"></span>
+
     <table class="table">
         <thead>
             <tr>
                 <th scope="col">날짜</th>
-                <th scope="col">금액</th>
-                <th scope="col">저장</th>
+                <th scope="col">납입금</th>
+                <th scope="col">소득</th>
+                <th scope="col">일별합계</th>
             </tr>
         </thead>
         <tbody>
             <tr th:each=" row : ${list}">
-                <td th:text="${#temporals.format(row.datememo,'yyyy-MM-dd')}" >2020-11-11</td>
-                <td><input type="text" th:value="${#numbers.formatInteger(row.price, 0, 'COMMA')}"name="price" th:id="'price' + ${row.id}" ></td>
-                <td><button th:onclick="|save(${row.id});|">V</button></td>
+                <td th:text="${#temporals.format(row.datememo,'dd')}" >11</td>
+                <td><span th:text="${#numbers.formatInteger(row.companyprice, 0, 'COMMA')}">1,000</span></td>
+                <td><span th:text="${#numbers.formatInteger(row.myprice, 0, 'COMMA')}">1,000</span></td>
+                <td><span th:text="${#numbers.formatInteger(row.totalprice, 0, 'COMMA')}">1,000</span></td>
             </tr>
             <tr>
                 <th colspan="3">합계 :: <span th:text="${#numbers.formatInteger(monthTotal, 0, 'COMMA')}">total</span> 원</th>
@@ -51,25 +55,34 @@
 
         var target='';
 
-        $("input[name='price']").focusout(function(){
-           $(this).val(priceToString($(this).val())); 
+        $("input[name='companyprice']").focusout(function(){
+           $(this).val(companypriceToString($(this).val())); 
         });
 
-        $("input[name='price']").focus(function(){
+        $("input[name='companyprice']").focus(function(){
 
             $(this).val('');
-           $(this).val(priceToString($(this).val())); 
+           $(this).val(companypriceToString($(this).val())); 
+        });
+        $("input[name='myprice']").focusout(function(){
+           $(this).val(mypriceToString($(this).val())); 
+        });
+
+        $("input[name='myprice']").focus(function(){
+
+            $(this).val('');
+           $(this).val(mypriceToString($(this).val())); 
         });
     });
     
     function save(param) {
 
-        var price = $("#price" + param).val()
+        var companyprice = $("#companyprice" + param).val()
 
         $.ajax({
             type: "post",
-            url: "/priceSave",
-            data: {price : price, id : param },
+            url: "/companypriceSave",
+            data: {companyprice : companyprice, id : param },
             dataType: "text",
             success: function (response) {
                 console.log(response);
@@ -82,8 +95,8 @@
       }
 
       	//천단위 콤마
-	function priceToString(price) {
-	    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	function companypriceToString(companyprice) {
+	    return companyprice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     }
 
 

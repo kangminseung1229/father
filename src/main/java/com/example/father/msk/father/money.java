@@ -2,6 +2,7 @@ package com.example.father.msk.father;
 
 import java.time.LocalDate;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,12 +23,21 @@ public class money {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private int year;
+    
     private int month;
 
     @CreationTimestamp
     private LocalDate datememo;
 
-    private Long price;
+    @Column(name = "companyPrice")
+    private Long companyprice;
+
+    @Column(name = "myPrice")
+    private Long myprice;
+
+    @Column(name = "totalPrice")
+    private Long totalprice;
 
     
 }

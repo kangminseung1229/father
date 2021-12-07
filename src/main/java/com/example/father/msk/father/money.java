@@ -21,6 +21,8 @@ public class money {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private int year;
+    
     private int month;
 
     @CreationTimestamp
@@ -33,7 +35,7 @@ public class money {
     private Long myprice;
 
     @Column(name = "totalPrice")
-    private Long totaprice;
+    private Long totalprice;
 
     
 }

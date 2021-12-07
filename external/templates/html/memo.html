@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>기록</title>
+
+
+<style>
+
+    td.grey{
+        color : grey;
+    }
+    td.red{
+        color : red;
+    }
+
+    .sel-center{
+        text-align-last: center;
+        text-align: center;
+        -ms-text-align-last: center;
+        -moz-text-align-last: center;
+    }
+
+</style>
+</head>
+
+<header th:replace="fragments/cm_top.html :: header('메모')"></header>
+
+<body>
+    
+    <span class="fs-4" th:text="|${year}년 ${month}월|"></span>
+    <form id="frm" onsubmit="return false">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    <select class="form-control sel-center" name="year">
+                        <th:block th:each="num : ${#numbers.sequence(2019,2025)}" >
+                            <option value="2021" th:value="${num}" th:text="${num}" th:selected="${num} == ${year}"></option>
+                        </th:block>
+                    </select>
+                    <br/>
+                    <select class="form-control sel-center" name="month">
+                        <th:block th:each="num : ${#numbers.sequence(1,12)}" >
+                            <option th:value="${num}" th:text="${num}" th:selected="${num} == ${month}" >12</option>
+                        </th:block>
+                    </select>
+                    <br/>
+                    <select class="form-control sel-center" name="day">
+                        <th:block th:each="num : ${#numbers.sequence(1,31)}" >
+                            <option th:value="${num}" th:text="${num}" th:selected="${num} == ${day}">29</option>
+                        </th:block>
+
+                    </select>
+                    <br/>
+                </th>
+            </tr>
+        </thead>
+
+            <tbody>
+                <tr>
+                    <td>
+                        <h2>납입금</h2>
+                        <input type="text" class="form-control" name="companyprice" id="companyprice">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <h2>개인 소득</h2>
+                        <input type="text" class="form-control" name="myprice" id="myprice">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <h2 style="color: red;">합계</h2>
+                         <span id="totalPrice" ></span> 원
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                         <button class="w-100 btn btn-primary btn-lg" onclick="save();"> 저장하기 </button>
+                    </td>
+                </tr>
+            </tbody>
+        <tbody>
+            
+        </tbody>
+    </table>
+    </form>
+
+</body>
+</html>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+
+    var tempPrice = "";
+
+    $(document).ready(function () {
+        $("#companyprice").keyup(function(){
+            
+            if ($("#myprice").val() =="") {
+                $("#myprice").val('0');
+            }
+
+            total(deleteCommaConvertInt($("#companyprice").val()), deleteCommaConvertInt($("#myprice").val()));
+            $(this).val(companypriceToString($(this).val())); 
+        });
+        
+        $("#companyprice").focus(function(){
+            $(this).val('');
+        });
+        
+        $("#myprice").keyup(function(){
+
+            if ($("#companyprice").val() =="") {
+                $("#companyprice").val('0');
+            }
+
+            total(deleteCommaConvertInt($("#companyprice").val()), deleteCommaConvertInt($("#myprice").val()));
+            $(this).val(companypriceToString($(this).val())); 
+        });
+
+        $("#myprice").focus(function(){
+            $(this).val('');
+        });
+    });
+    
+    function save(param) {
+
+        var formData = new FormData(document.getElementById('frm'));
+
+        console.log(formData);
+
+        $.ajax({
+            type: "post",
+            url: "/companypriceSave",
+            data: {form : formData},
+            dataType: "text",
+            success: function (response) {
+                console.log(response);
+            },error : function (e) { 
+                console.log(e);
+              }
+        });
+        
+      }
+
+    //천단위 콤마
+	function companypriceToString(companyprice) {
+        tempPrice = companyprice.toString().replaceAll(",","");
+	    return tempPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+    
+    //콤마 제거, 정수형 변환
+    function deleteCommaConvertInt(param) {  
+        return parseInt(param.replaceAll(",",""));
+    }
+
+
+    //총합 합계 구하기
+    function total(company, my) {  
+        var total = parseInt(company) + parseInt(my);
+        $("#totalPrice").text(companypriceToString(total));
+    }
+
+
+</script>

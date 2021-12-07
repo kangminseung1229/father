@@ -2,19 +2,18 @@ package com.example.father.msk.father;
 
 import java.time.LocalDate;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.DynamicUpdate;
 
 import lombok.Data;
 
 @Data
 @Entity
-@DynamicUpdate
 public class money {
 
 
@@ -27,7 +26,14 @@ public class money {
     @CreationTimestamp
     private LocalDate datememo;
 
-    private Long price;
+    @Column(name = "companyPrice")
+    private Long companyprice;
+
+    @Column(name = "myPrice")
+    private Long myprice;
+
+    @Column(name = "totalPrice")
+    private Long totaprice;
 
     
 }

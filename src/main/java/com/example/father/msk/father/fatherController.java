@@ -59,7 +59,7 @@ public class fatherController {
         money target = new money();
         target = updateMoney.get();
         target.setId(id);
-        target.setPrice(Long.parseLong(price.replace(",","")));
+        // target.setPrice(Long.parseLong(price.replace(",","")));
         
         return moneyRepo.save(target);
     }

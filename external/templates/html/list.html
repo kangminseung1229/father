@@ -26,14 +26,16 @@
         <thead>
             <tr>
                 <th scope="col">날짜</th>
-                <th scope="col">금액</th>
+                <th scope="col">회사입금</th>
+                <th scope="col">개인입금</th>
                 <th scope="col">저장</th>
             </tr>
         </thead>
         <tbody>
             <tr th:each=" row : ${list}">
                 <td th:text="${#temporals.format(row.datememo,'yyyy-MM-dd')}" >2020-11-11</td>
-                <td><input type="text" th:value="${#numbers.formatInteger(row.price, 0, 'COMMA')}"name="price" th:id="'price' + ${row.id}" ></td>
+                <td><input type="text" th:value="${#numbers.formatInteger(row.companyprice, 0, 'COMMA')}"name="price" th:id="'companyPrice' + ${row.id}" ></td>
+                <td><input type="text" th:value="${#numbers.formatInteger(row.myprice, 0, 'COMMA')}"name="price" th:id="'myprice' + ${row.id}" ></td>
                 <td><button th:onclick="|save(${row.id});|">V</button></td>
             </tr>
             <tr>

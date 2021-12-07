@@ -30,27 +30,26 @@
 
 <body>
     
-    <span class="fs-4" th:text="|${year}년 ${month}월|"></span>
     <form id="frm" onsubmit="return false">
     <table class="table">
         <thead>
             <tr>
                 <th>
-                    <select class="form-control sel-center" name="year">
+                    <select class="form-control sel-center" name="year" id="year">
                         <th:block th:each="num : ${#numbers.sequence(2019,2025)}" >
-                            <option value="2021" th:value="${num}" th:text="${num}" th:selected="${num} == ${year}"></option>
+                            <option value="2021" th:value="${num}" th:text="|${num}년|" th:selected="${num} == ${year}"></option>
                         </th:block>
                     </select>
                     <br/>
-                    <select class="form-control sel-center" name="month">
+                    <select class="form-control sel-center" name="month" id="month">
                         <th:block th:each="num : ${#numbers.sequence(1,12)}" >
-                            <option th:value="${num}" th:text="${num}" th:selected="${num} == ${month}" >12</option>
+                            <option th:value="${num}" th:text="|${num}월|" th:selected="${num} == ${month}" >12</option>
                         </th:block>
                     </select>
                     <br/>
-                    <select class="form-control sel-center" name="day">
+                    <select class="form-control sel-center" name="day" id="day">
                         <th:block th:each="num : ${#numbers.sequence(1,31)}" >
-                            <option th:value="${num}" th:text="${num}" th:selected="${num} == ${day}">29</option>
+                            <option th:value="${num}" th:text="|${num}일|" th:selected="${num} == ${day}">29</option>
                         </th:block>
 
                     </select>
@@ -63,19 +62,19 @@
                 <tr>
                     <td>
                         <h2>납입금</h2>
-                        <input type="text" class="form-control" name="companyprice" id="companyprice">
+                        <input type="text" class="form-control" name="companyprice" id="companyprice" th:value="${companyPrice}">
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <h2>개인 소득</h2>
-                        <input type="text" class="form-control" name="myprice" id="myprice">
+                        <input type="text" class="form-control" name="myprice" id="myprice" th:value="${myPrice}">
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <h2 style="color: red;">합계</h2>
-                         <span id="totalPrice" ></span> 원
+                         <span id="totalPrice"  th:text="${totalPrice}" ></span> 원
                     </td>
                 </tr>
                 <tr>
@@ -97,6 +96,7 @@
 <script>
 
     var tempPrice = "";
+    var year, month, day;
 
     $(document).ready(function () {
         $("#companyprice").keyup(function(){
@@ -126,6 +126,29 @@
         $("#myprice").focus(function(){
             $(this).val('');
         });
+
+        // select box 연도, 월 변경
+        $("#year").change(function(){
+            year = $("#year").val();
+            month = $("#month").val();
+            day =  $("#day").val();
+            location.href="/memo?year="+year+"&month="+month+"&day="+day;
+        });
+
+        $("#month").change(function(){
+            year = $("#year").val();
+            month = $("#month").val();
+            day =  $("#day").val();
+            location.href="/memo?year="+year+"&month="+month+"&day="+day;
+        });
+        $("#day").change(function(){
+            year = $("#year").val();
+            month = $("#month").val();
+            day =  $("#day").val();
+            location.href="/memo?year="+year+"&month="+month+"&day="+day;
+        });
+
+
     });
     
     function save(param) {

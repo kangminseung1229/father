@@ -36,8 +36,9 @@ public class fatherController {
 
         Optional<money> opt = moneyRepo.findByDatememo(now);
 
-        model.addAttribute("list", moneyRepo.findBymonthOrderByDatememo(now.getMonthValue()));
-        model.addAttribute("monthTotal", moneyRepo.sumByMonth(now.getMonthValue()));
+        model.addAttribute("list", moneyRepo.findByYearAndMonthOrderByDatememo(year, month));
+        model.addAttribute("sumCompanyPrice", moneyRepo.sumCompanyPrice(year, month));
+        model.addAttribute("sumMyPrice", moneyRepo.sumMyPrice(year, month));
         model.addAttribute("year", year);
         model.addAttribute("month", month);
 
@@ -46,21 +47,37 @@ public class fatherController {
 
     @GetMapping(value = { "/", "memo" })
     public String memo(Model model, @RequestParam(defaultValue = "0") int year,
-            @RequestParam(defaultValue = "0") int month) {
+            @RequestParam(defaultValue = "0") int month,
+            @RequestParam(defaultValue = "0") int day) {
 
         LocalDate now = LocalDate.now();
 
         if (year == 0) {
             year = now.getYear();
         }
-
         if (month == 0) {
             month = now.getMonthValue();
+        }
+        if (day == 0) {
+            day = now.getDayOfMonth();
+        }
+
+        LocalDate targetDate = LocalDate.of(year, month, day);
+
+        Optional<money> tempRow;
+
+        tempRow =  moneyRepo.findByDatememo(targetDate);
+
+        if (tempRow.isPresent()) {
+            money realrow = tempRow.get();
+            model.addAttribute("companyPrice", realrow.getCompanyprice());
+            model.addAttribute("myPrice", realrow.getMyprice());
+            model.addAttribute("totalPrice", realrow.getCompanyprice() + realrow.getMyprice());
         }
 
         model.addAttribute("year", year);
         model.addAttribute("month", month);
-        model.addAttribute("day", now.getDayOfMonth());
+        model.addAttribute("day", day);
 
         return "html/memo";
     }

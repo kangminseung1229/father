@@ -15,12 +15,35 @@
     td.red{
         color : red;
     }
+
+    .sel-center{
+        text-align-last: center;
+        text-align: center;
+        -ms-text-align-last: center;
+        -moz-text-align-last: center;
+    }
+
 </style>
 </head>
 
 <header th:replace="fragments/cm_top.html :: header('데이터')"></header>
 
 <body>
+
+    <select class="form-control sel-center" name="year" id="year">
+        <th:block th:each="num : ${#numbers.sequence(2019,2025)}" >
+            <option value="2021" th:value="${num}" th:text="${num}" th:selected="${num} == ${year}"></option>
+        </th:block>
+    </select>
+    <br/>
+    <select class="form-control sel-center" name="month" id="month">
+        <th:block th:each="num : ${#numbers.sequence(1,12)}" >
+            <option th:value="${num}" th:text="${num}" th:selected="${num} == ${month}" >12</option>
+        </th:block>
+    </select>
+    <br/>
+    <br/>
+
     
     <span class="fs-4" th:text="|${year}년 ${month}월|"></span>
 
@@ -30,7 +53,6 @@
                 <th scope="col">날짜</th>
                 <th scope="col">납입금</th>
                 <th scope="col">소득</th>
-                <th scope="col">일별합계</th>
             </tr>
         </thead>
         <tbody>
@@ -38,10 +60,11 @@
                 <td th:text="${#temporals.format(row.datememo,'dd')}" >11</td>
                 <td><span th:text="${#numbers.formatInteger(row.companyprice, 0, 'COMMA')}">1,000</span></td>
                 <td><span th:text="${#numbers.formatInteger(row.myprice, 0, 'COMMA')}">1,000</span></td>
-                <td><span th:text="${#numbers.formatInteger(row.totalprice, 0, 'COMMA')}">1,000</span></td>
             </tr>
             <tr>
-                <th colspan="3">합계 :: <span th:text="${#numbers.formatInteger(monthTotal, 0, 'COMMA')}">total</span> 원</th>
+                <th>합계</th>
+                <th><span th:text="${#numbers.formatInteger(sumCompanyPrice, 0, 'COMMA')}">total</span> 원</th>
+                <th><span th:text="${#numbers.formatInteger(sumMyPrice, 0, 'COMMA')}">total</span> 원</th>
             </tr>
         </tbody>
     </table>
@@ -54,6 +77,8 @@
     $(document).ready(function () {
 
         var target='';
+        var year='';
+        var month='';
 
         $("input[name='companyprice']").focusout(function(){
            $(this).val(companypriceToString($(this).val())); 
@@ -72,6 +97,20 @@
 
             $(this).val('');
            $(this).val(mypriceToString($(this).val())); 
+        });
+
+
+        // select box 연도, 월 변경
+        $("#year").change(function(){
+            year = $("#year").val();
+            month = $("#month").val();
+            location.href="/list?year="+year+"&month="+month;
+        });
+
+        $("#month").change(function(){
+            year = $("#year").val();
+            month = $("#month").val();
+            location.href="/list?year="+year+"&month="+month;
         });
     });
     

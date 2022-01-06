@@ -30,7 +30,8 @@
 
 <body>
     
-    <form id="frm" onsubmit="return false">
+    <form id="frm" onsubmit="return false" enctype="multipart/form-data">
+        <input type="hidden" name="id" id="id" th:value="${id}"/>
     <table class="table">
         <thead>
             <tr>
@@ -151,22 +152,37 @@
 
     });
     
-    function save(param) {
+    function save() {
 
-        var formData = new FormData(document.getElementById('frm'));
+        
+        var datememo = $("#year").val() + "-" + $("#month").val() + "-" + $("#day").val();
+        // var formData = new FormData(document.getElementById("frm"));
+        var formData = new FormData();
+        formData.append("id", $("#id").val());
+        formData.append("year", $("#year").val());
+        formData.append("month", $("#month").val());
+        formData.append("day", $("#day").val());
+        formData.append("strdatememo", datememo);
+        formData.append("companyprice", $("#companyprice").val().replaceAll(",",""));
+        formData.append("myprice", $("#myprice").val().replaceAll(",",""));
 
-        console.log(formData);
 
+
+        
         $.ajax({
             type: "post",
             url: "/companypriceSave",
-            data: {form : formData},
-            dataType: "text",
+            processData: false,
+            contentType: false,
+            data: formData,
+            dataType: "json",
             success: function (response) {
                 console.log(response);
+                alert('저장 완료!');
             },error : function (e) { 
                 console.log(e);
-              }
+                alert('에러발생.');
+            }
         });
         
       }

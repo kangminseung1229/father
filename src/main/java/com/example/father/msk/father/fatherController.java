@@ -3,12 +3,17 @@ package com.example.father.msk.father;
 import java.time.LocalDate;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 
 @Controller
@@ -70,6 +75,7 @@ public class fatherController {
 
         if (tempRow.isPresent()) {
             money realrow = tempRow.get();
+            model.addAttribute("id", realrow.getId());
             model.addAttribute("companyPrice", realrow.getCompanyprice());
             model.addAttribute("myPrice", realrow.getMyprice());
             model.addAttribute("totalPrice", realrow.getCompanyprice() + realrow.getMyprice());
@@ -82,21 +88,26 @@ public class fatherController {
         return "html/memo";
     }
 
-    // @PostMapping(value="companypriceSave")
-    // @ResponseBody
-    // public String companypriceSave(HttpServletRequest request) {
+    
 
-    //     String year, month;
-    //     LocalDate datememo;
-    //     Long companyPrice, myPrice, totalprice;
+    @PostMapping(value="companypriceSave")
+    @ResponseBody
+    public money companypriceSave(money entity, HttpServletRequest request) {
 
+
+        int year = Integer.parseInt(request.getParameter("year"));
+        int month = Integer.parseInt(request.getParameter("month"));
+        int day = Integer.parseInt(request.getParameter("day"));
         
-
+        LocalDate datememo = LocalDate.of(year, month, day);
         
+        entity.setDatememo(datememo);
+        entity.setTotalprice(entity.getCompanyprice() + entity.getMyprice());
 
-        
-    //     return entity;
-    // }
+        moneyRepo.save(entity);
+
+        return entity;
+    }
     
 
     // // 금액 입력 후 저장

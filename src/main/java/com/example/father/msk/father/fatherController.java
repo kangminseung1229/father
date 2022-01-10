@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,6 +21,8 @@ public class fatherController {
 
     @Autowired
     private moneyRepository moneyRepo;
+
+    private final Long absouluteCompanyPrice = 3718000l;
 
     @GetMapping("list")
     public String list(Model model, @RequestParam(defaultValue = "0") int year,
@@ -42,7 +43,7 @@ public class fatherController {
         Optional<money> opt = moneyRepo.findByDatememo(now);
 
         model.addAttribute("list", moneyRepo.findByYearAndMonthOrderByDatememo(year, month));
-        model.addAttribute("sumCompanyPrice", moneyRepo.sumCompanyPrice(year, month));
+        model.addAttribute("sumCompanyPrice", moneyRepo.sumCompanyPrice(year, month) - absouluteCompanyPrice);
         model.addAttribute("sumMyPrice", moneyRepo.sumMyPrice(year, month));
         model.addAttribute("year", year);
         model.addAttribute("month", month);
@@ -78,7 +79,10 @@ public class fatherController {
             model.addAttribute("id", realrow.getId());
             model.addAttribute("companyPrice", realrow.getCompanyprice());
             model.addAttribute("myPrice", realrow.getMyprice());
-            model.addAttribute("totalPrice", realrow.getCompanyprice() + realrow.getMyprice());
+
+            //필요없다고 지움
+            // model.addAttribute("totalPrice", realrow.getCompanyprice() + realrow.getMyprice());
+
         }
 
         model.addAttribute("year", year);
@@ -113,7 +117,7 @@ public class fatherController {
     // // 금액 입력 후 저장
     // @PostMapping("priceSave")
     // @ResponseBody
-    // public money priceSave(@RequestParam(required = true) String price,
+    // public money priceSave(@RequestParam(required = true) String price,  
     // @RequestParam(required = true) Long id){
 
     // Optional<money> updateMoney = moneyRepo.findById(id);

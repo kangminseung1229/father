@@ -152,17 +152,34 @@
 
     });
     
+    /*
+        form 저장 및 전송
+        param : 없음.
+    */
     function save() {
 
+        //날짜 스트링 조합하기
+        let frmYear = $("#year").val();
+        let frmMonth = $("#month").val();
+        let frmDay = $("#day").val();
+
+        // if (Number(frmMonth) < 10) {
+        //     frmMonth = "0" + frmMonth;
+        // }
+        // if (Number(frmDay) < 10) {
+        //     frmDay = "0" + frmDay;
+        // }
+        // var strdatememo = frmYear + "-" + frmMonth + "-" +  frmDay;
+
+
         
-        var datememo = $("#year").val() + "-" + $("#month").val() + "-" + $("#day").val();
         // var formData = new FormData(document.getElementById("frm"));
         var formData = new FormData();
         formData.append("id", $("#id").val());
         formData.append("year", $("#year").val());
         formData.append("month", $("#month").val());
         formData.append("day", $("#day").val());
-        formData.append("strdatememo", datememo);
+        // formData.append("strdatememo", strdatememo);
         formData.append("companyprice", $("#companyprice").val().replaceAll(",",""));
         formData.append("myprice", $("#myprice").val().replaceAll(",",""));
 

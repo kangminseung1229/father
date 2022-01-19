@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.ReturnedType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -102,15 +103,21 @@ public class fatherController {
         int year = Integer.parseInt(request.getParameter("year"));
         int month = Integer.parseInt(request.getParameter("month"));
         int day = Integer.parseInt(request.getParameter("day"));
+
         
         LocalDate datememo = LocalDate.of(year, month, day);
-        
+
+        //entity 형식의 datememo 가 String으로 맞지않기 때문에 따로 request에서 분리한다.
+        // entity 의 타입이 javascript 의 타입과 일치하지 않으면 엔티티오류가 남 (필드와 폼 필드의 이름이 같을 때)
+        // String strDatememo = request.getParameter("strdatememo");
+        // LocalDate datememo = LocalDate.parse(strDatememo);
         entity.setDatememo(datememo);
+        
+        
         entity.setTotalprice(entity.getCompanyprice() + entity.getMyprice());
 
-        moneyRepo.save(entity);
-
-        return entity;
+        
+        return moneyRepo.save(entity);
     }
     
 

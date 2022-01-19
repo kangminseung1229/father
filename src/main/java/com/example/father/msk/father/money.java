@@ -25,7 +25,6 @@ public class money {
     
     private int month;
 
-    @CreationTimestamp
     private LocalDate datememo;
 
     @Column(name = "companyPrice")

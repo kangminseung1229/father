@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.example.father</groupId>
 	<artifactId>fathermemo</artifactId>
-	<version>02</version>
+	<version>03</version>
 	<name>father</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
@@ -40,7 +40,7 @@
 			<groupId>org.mariadb.jdbc</groupId>
 			<artifactId>mariadb-java-client</artifactId>
 			<scope>runtime</scope>
-		</dependency>
+		</dependency> 
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>

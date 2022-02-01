@@ -11,7 +11,6 @@ public interface moneyRepository extends JpaRepository<money, Long> {
 
     Optional<money> findByDatememo(LocalDate now);
 
-    List<money> findByYearAndMonthOrderByDatememo(int year, int month);
 
     // 월별 합계
     @Query(value = "SELECT sum(totalPrice) from money where year = :year AND  month = :month ", nativeQuery = true)
@@ -27,5 +26,8 @@ public interface moneyRepository extends JpaRepository<money, Long> {
 
     // 해당 날짜 객체 반환
     Optional<money> findByDatememo(String datememo);
+
+
+    Optional<List<money>> findByYearAndMonthOrderByDatememo(int year, int month);
 
 }

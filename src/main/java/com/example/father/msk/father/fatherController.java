@@ -1,6 +1,7 @@
 package com.example.father.msk.father;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
 @Controller
 @RequestMapping("/")
 public class fatherController {
@@ -28,6 +28,8 @@ public class fatherController {
     @GetMapping("list")
     public String list(Model model, @RequestParam(defaultValue = "0") int year,
             @RequestParam(defaultValue = "0") int month) {
+
+        
 
         LocalDate now = LocalDate.now();
 
@@ -43,9 +45,35 @@ public class fatherController {
 
         Optional<money> opt = moneyRepo.findByDatememo(now);
 
-        model.addAttribute("list", moneyRepo.findByYearAndMonthOrderByDatememo(year, month));
-        model.addAttribute("sumCompanyPrice", moneyRepo.sumCompanyPrice(year, month) - absouluteCompanyPrice);
-        model.addAttribute("sumMyPrice", moneyRepo.sumMyPrice(year, month));
+        // 쿼리 합계가 null이면 null
+        Long sumMyPrice = moneyRepo.sumMyPrice(year, month);
+        Long sumCompanyPrice = moneyRepo.sumCompanyPrice(year, month);
+        
+        if (sumMyPrice == null) {
+            sumMyPrice = 0l;
+        }
+        
+        if (sumCompanyPrice == null) {
+            sumCompanyPrice = 0l;
+        }
+        
+        
+        Long attributeValue = sumCompanyPrice - absouluteCompanyPrice;
+
+
+
+        Optional<List<money>> moneyList = moneyRepo.findByYearAndMonthOrderByDatememo(year, month);
+        List<money> list;
+
+        if (moneyList.isPresent()) {
+            list = moneyList.get();
+        } else {
+            list = null;
+        }
+
+        model.addAttribute("list", list); 
+        model.addAttribute("sumCompanyPrice", attributeValue);
+        model.addAttribute("sumMyPrice", sumMyPrice);
         model.addAttribute("year", year);
         model.addAttribute("month", month);
 
@@ -73,7 +101,7 @@ public class fatherController {
 
         Optional<money> tempRow;
 
-        tempRow =  moneyRepo.findByDatememo(targetDate);
+        tempRow = moneyRepo.findByDatememo(targetDate);
 
         if (tempRow.isPresent()) {
             money realrow = tempRow.get();
@@ -81,8 +109,9 @@ public class fatherController {
             model.addAttribute("companyPrice", realrow.getCompanyprice());
             model.addAttribute("myPrice", realrow.getMyprice());
 
-            //필요없다고 지움
-            // model.addAttribute("totalPrice", realrow.getCompanyprice() + realrow.getMyprice());
+            // 필요없다고 지움
+            // model.addAttribute("totalPrice", realrow.getCompanyprice() +
+            // realrow.getMyprice());
 
         }
 
@@ -93,38 +122,31 @@ public class fatherController {
         return "html/memo";
     }
 
-    
-
-    @PostMapping(value="companypriceSave")
+    @PostMapping(value = "companypriceSave")
     @ResponseBody
     public money companypriceSave(money entity, HttpServletRequest request) {
-
 
         int year = Integer.parseInt(request.getParameter("year"));
         int month = Integer.parseInt(request.getParameter("month"));
         int day = Integer.parseInt(request.getParameter("day"));
 
-        
         LocalDate datememo = LocalDate.of(year, month, day);
 
-        //entity 형식의 datememo 가 String으로 맞지않기 때문에 따로 request에서 분리한다.
+        // entity 형식의 datememo 가 String으로 맞지않기 때문에 따로 request에서 분리한다.
         // entity 의 타입이 javascript 의 타입과 일치하지 않으면 엔티티오류가 남 (필드와 폼 필드의 이름이 같을 때)
         // String strDatememo = request.getParameter("strdatememo");
         // LocalDate datememo = LocalDate.parse(strDatememo);
         entity.setDatememo(datememo);
-        
-        
+
         entity.setTotalprice(entity.getCompanyprice() + entity.getMyprice());
 
-        
         return moneyRepo.save(entity);
     }
-    
 
     // // 금액 입력 후 저장
     // @PostMapping("priceSave")
     // @ResponseBody
-    // public money priceSave(@RequestParam(required = true) String price,  
+    // public money priceSave(@RequestParam(required = true) String price,
     // @RequestParam(required = true) Long id){
 
     // Optional<money> updateMoney = moneyRepo.findById(id);

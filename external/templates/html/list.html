@@ -55,7 +55,7 @@
                 <th scope="col">매출</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody th:if="${list != null}">
             <tr th:each=" row : ${list}">
                 <td th:text="${#temporals.format(row.datememo,'dd')}" >11</td>
                 <td><span th:text="${#numbers.formatInteger(row.companyprice, 0, 'COMMA')}">1,000</span></td>
@@ -67,6 +67,10 @@
                 <th><span th:text="${#numbers.formatInteger(sumMyPrice, 0, 'COMMA')}">total</span> 원</th>
             </tr>
         </tbody>
+
+        <tr th:if="${list == null}">
+            <td colspan="3"></td>
+        </tr>
     </table>
 </body>
 </html>

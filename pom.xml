@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.example.father</groupId>
 	<artifactId>fathermemo</artifactId>
-	<version>02</version>
+	<version>03</version>
 	<name>father</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>

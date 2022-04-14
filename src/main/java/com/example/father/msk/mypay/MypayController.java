@@ -52,11 +52,22 @@ public class MypayController {
     //추가하기
     @PostMapping("/insert")
     @Transactional
-    public String dataInsert(@RequestParam(required = true) String basicpay, @RequestParam(required = true) String pluspay, @RequestParam(required = false) Long id){
+    public String dataInsert(@RequestParam(required = false) String basicpay, @RequestParam(required = false) String pluspay, @RequestParam(required = false) Long id){
+
+
+        //입력값이 없는 경우
+        if (basicpay == "") {
+            basicpay = "0";
+        }
+
+        if (pluspay == "") {
+            pluspay = "0";
+        }
+
 
         //타입변경
-        Long basicpayToLong = Long.parseLong(basicpay);
-        Long pluspayToLong = Long.parseLong(pluspay);
+        Long basicpayToLong = Long.parseLong(basicpay,10);
+        Long pluspayToLong = Long.parseLong(pluspay,10);
         
         Mypay mypay = new Mypay();
 

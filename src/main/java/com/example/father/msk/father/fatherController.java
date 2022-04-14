@@ -7,7 +7,6 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.ReturnedType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +22,7 @@ public class fatherController {
     @Autowired
     private moneyRepository moneyRepo;
 
-    private final Long absouluteCompanyPrice = 3718000l;
+    // private final Long absouluteCompanyPrice = 3718000l;  필요없어짐
 
     @GetMapping("list")
     public String list(Model model, @RequestParam(defaultValue = "0") int year,
@@ -58,7 +57,7 @@ public class fatherController {
         }
         
         
-        Long attributeValue = sumCompanyPrice - absouluteCompanyPrice;
+        // Long attributeValue = sumCompanyPrice - absouluteCompanyPrice;
 
 
 
@@ -72,7 +71,7 @@ public class fatherController {
         }
 
         model.addAttribute("list", list); 
-        model.addAttribute("sumCompanyPrice", attributeValue);
+        model.addAttribute("sumCompanyPrice", sumCompanyPrice);
         model.addAttribute("sumMyPrice", sumMyPrice);
         model.addAttribute("year", year);
         model.addAttribute("month", month);

@@ -70,3 +70,4 @@ local.txt
 server.txt
 
 # End of https://www.toptal.com/developers/gitignore/api/java-web,macos,maven
+.properties

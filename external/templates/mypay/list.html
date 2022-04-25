@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+
+<style>
+
+    td.grey{
+        color : grey;
+    }
+    td.red{
+        color : red;
+    }
+
+    .sel-center{
+        text-align-last: center;
+        text-align: center;
+        -ms-text-align-last: center;
+        -moz-text-align-last: center;
+    }
+
+</style>
+</head>
+
+<header th:replace="fragments/cm_top.html :: header('통장')"></header>
+
+<body>
+
+    
+    
+    <form th:action="@{/mypay/insert}" method="post" name="payForm">
+        <div class="alert alert-success text-center" role="alert" onclick="javascript:this.parentNode.submit();">
+            추가하기 (클릭)
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon3">기본</span>
+            <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" name="basicpay" th:value="${targetMypay?.basicpay}">
+        </div>
+        
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon3">상여</span>
+            <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" name="pluspay" th:value="${targetMypay?.pluspay}">
+        </div>
+
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon3">매출</span>
+            <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" name="memopay" th:value="${targetMypay?.memopay}">
+        </div>
+
+        <input type="hidden" name="id" th:value="${targetMypay?.id}">
+    </form>
+
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">날짜</th>
+                <th scope="col">기본</th>
+                <th scope="col">상여</th>
+                <th scope="col">매출</th>
+            </tr>
+        </thead>
+        <tbody th:if="${mypayList != null}">
+            <tr th:each=" row : ${mypayList}" th:onclick="|location.href='/mypay/list?id=${row.id}';|">
+                <td th:text="${#temporals.format(row.paydate,'yyyy-MM')}" >11</td>
+                <td><span th:text="${#numbers.formatInteger(row.basicpay, 0, 'COMMA')}">1,000</span></td>
+                <td><span th:text="${#numbers.formatInteger(row.pluspay, 0, 'COMMA')}">1,000</span></td>
+                <td><span th:text="${#numbers.formatInteger(row.memopay, 0, 'COMMA')}">1,000</span></td>
+            </tr>
+        </tbody>
+
+        <tr th:if="${list == null}">
+            <td colspan="4"></td>
+        </tr>
+    </table>
+</body>
+</html>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+
+      	//천단위 콤마
+	function companypriceToString(companyprice) {
+	    return companyprice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+
+</script>

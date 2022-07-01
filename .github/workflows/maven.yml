@@ -23,4 +23,10 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
-      run: ifconfig
+      run: mvn -B package --file pom.xml
+
+    - name: "현재경로"
+      run : pwd
+
+    - name: "jar 위치"
+      run : whereis fathermemo-08.jar

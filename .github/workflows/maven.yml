@@ -28,5 +28,5 @@ jobs:
     - name: "현재경로"
       run : pwd
 
-    - name: "jar 위치"
-      run : whereis fathermemo-08.jar
+    - name: "파일 ls"
+      run : ls -la

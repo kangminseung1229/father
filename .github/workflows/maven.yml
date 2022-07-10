@@ -22,11 +22,12 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: maven
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
 
-    - name: "현재경로"
-      run : pwd
+    # - name: Build with Maven
+    #   run: mvn -B package --file pom.xml
 
-    - name: "파일 ls"
-      run : ls -la
+    - name: Create ssh key
+      run: ssh-keygen -m PEM -t rsa -b 4096 -C "whelming25@naver.com"
+
+
+

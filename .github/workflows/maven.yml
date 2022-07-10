@@ -26,8 +26,14 @@ jobs:
     # - name: Build with Maven
     #   run: mvn -B package --file pom.xml
 
-    - name: Create ssh key
-      run: ssh-keygen -m PEM -t rsa -b 4096 -C "whelming25@naver.com"
-
+    - name: Deploy
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.REMOTE_IP }}
+        username: ${{ secrets.REMOTE_SSH_ID }}
+        key: ${{ secrets.REMOTE_SSH_KEY }}
+        port: ${{ secrets.REMOTE_SSH_PORT }}
+        script: |
+          ls -la
 
 

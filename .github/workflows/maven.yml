@@ -9,6 +9,8 @@ on:
 jobs:
   build:
 
+      runs-on: ubuntu-latest
+
     steps:
     - name: "현재경로"
       run : pwd

@@ -2,7 +2,6 @@
 # Created by https://www.toptal.com/developers/gitignore/api/java-web,macos,maven
 # Edit at https://www.toptal.com/developers/gitignore?templates=java-web,macos,maven
 
-main.yml
 
 .vscode/
 ### Java-Web ###
@@ -25,7 +24,7 @@ target/
 
 ### macOS ###
 # General
-.DS_Store
+.DS_Store1
 .AppleDouble
 .LSOverride
 

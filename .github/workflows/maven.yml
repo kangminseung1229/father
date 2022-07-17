@@ -12,7 +12,11 @@ jobs:
     steps:
       - name: echo SSH key
         run: |
-          echo ${{ secrets.REMOTE_IP }} 
-          echo ${{ secrets.REMOTE_SSH_ID }}
-          echo ${{ secrets.REMOTE_SSH_KEY }}
+          ls -la > "scptest.txt"
+          scp -P $SPORT scptest.txt $SID@$SIP:/home/father
         shell: bash
+        env:
+          SIP :  ${{ secrets.REMOTE_IP }} 
+          SID :  ${{ secrets.REMOTE_SSH_ID }}
+          SKEY :  ${{ secrets.REMOTE_SSH_KEY }}
+          SPORT :  ${{ secrets.REMOTE_SSH_PORT }}

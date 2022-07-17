@@ -12,11 +12,7 @@ jobs:
     steps:
       - name: echo SSH key
         run: |
-          echo $SSH_REMOTE_IP
-          echo $SSH_REMOTE_SSH_ID
-          echo $SSH_REMOTE_SSH_KEY
+          echo ${{ secrets.REMOTE_IP }} 
+          echo ${{ secrets.REMOTE_SSH_ID }}
+          echo ${{ secrets.REMOTE_SSH_KEY }}
         shell: bash
-        env:
-          SSH_REMOTE_IP : ${{ secrets.REMOTE_IP }} 
-          SSH_REMOTE_SSH_ID : ${{ secrets.REMOTE_SSH_ID }}
-          SSH_REMOTE_SSH_KEY :  ${{ secrets.REMOTE_SSH_KEY }}

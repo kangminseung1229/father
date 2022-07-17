@@ -1,5 +1,4 @@
-
-name: echo Test
+name: echo 5
 
 on:
   push:
@@ -7,13 +6,18 @@ on:
   pull_request:
     branches: [ "master" ]
 
+jobs:
+  build:
 
-stages : 
-    - test
+    steps:
+    - name: "현재경로"
+      run : pwd
 
-test-job :
-    stage: test
-    script : 
-        - echo ${{ secrets.REMOTE_IP }}
-        - echo ${{ secrets.REMOTE_SSH_ID }}
-        - echo ${{ secrets.REMOTE_SSH_KEY }}
+    - name: "아이피"
+      run : echo ${{ secrets.REMOTE_IP }} 
+
+    - name: "ssh ID"
+      run : echo ${{ secrets.REMOTE_SSH_ID }}
+
+    - name: "ssh KEY"
+      run : echo ${{ secrets.REMOTE_SSH_KEY }}

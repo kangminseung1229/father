@@ -22,19 +22,26 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: maven
+    
+    - name : echo
+    script : |
+        echo ${{ secrets.REMOTE_IP }}
+        echo ${{ secrets.REMOTE_SSH_ID }}
+        echo ${{ secrets.REMOTE_SSH_KEY }}
+      
 
     # - name: Build with Maven
     #   run: mvn -B package --file pom.xml
 
-    - name: Deploy
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.REMOTE_IP }}
-        username: ${{ secrets.REMOTE_SSH_ID }}
-        key: ${{ secrets.REMOTE_SSH_KEY }}
-        port: 9114
-        script: |
-          cd /root
-          ls -la
+    # - name: Deploy
+    #   uses: appleboy/ssh-action@master
+    #   with:
+    #     host: ${{ secrets.REMOTE_IP }}
+    #     username: ${{ secrets.REMOTE_SSH_ID }}
+    #     key: ${{ secrets.REMOTE_SSH_KEY }}
+    #     port: 9114
+    #     script: |
+    #       cd /root
+    #       ls -la
 
 

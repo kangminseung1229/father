@@ -1,3 +1,13 @@
+
+name: echo Test
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+
 stages : 
     - test
 

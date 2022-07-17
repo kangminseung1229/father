@@ -13,7 +13,7 @@ jobs:
       - name: echo SSH key
         run: |
           ls -la > "scptest.txt"
-          scp -P 9114 scptest.txt $SID@$SIP:/home/father
+          scp -P 9114 scptest.txt root@www.lionhaert.pe.kr:/home/father
         shell: bash
         env:
           SIP :  ${{ secrets.REMOTE_IP }} 

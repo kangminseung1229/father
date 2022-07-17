@@ -1,4 +1,4 @@
-name: echo 5
+name: Java CI with Maven
 
 on:
   push:
@@ -8,18 +8,15 @@ on:
 
 jobs:
   build:
-
-      runs-on: ubuntu-latest
-
+    runs-on: ubuntu-latest
     steps:
-    - name: "현재경로"
-      run : pwd
-
-    - name: "아이피"
-      run : echo ${{ secrets.REMOTE_IP }} 
-
-    - name: "ssh ID"
-      run : echo ${{ secrets.REMOTE_SSH_ID }}
-
-    - name: "ssh KEY"
-      run : echo ${{ secrets.REMOTE_SSH_KEY }}
+      - name: echo SSH key
+        run: |
+          echo "$SSH_REMOTE_IP"
+          echo "$SSH_REMOTE_SSH_ID"
+          echo "$SSH_REMOTE_SSH_KEY"
+        shell: bash
+        env:
+          SSH_REMOTE_IP : echo ${{ secrets.REMOTE_IP }} 
+          SSH_REMOTE_SSH_ID : echo ${{ secrets.REMOTE_SSH_ID }}
+          SSH_REMOTE_SSH_KEY :  echo ${{ secrets.REMOTE_SSH_KEY }}

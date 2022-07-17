@@ -24,11 +24,9 @@ jobs:
         cache: maven
     
     - name : echo
-    script : |
-        echo ${{ secrets.REMOTE_IP }}
-        echo ${{ secrets.REMOTE_SSH_ID }}
-        echo ${{ secrets.REMOTE_SSH_KEY }}
-      
+      run : echo ${{ secrets.REMOTE_IP }}
+      run : echo ${{ secrets.REMOTE_SSH_ID }}
+      run : echo ${{ secrets.REMOTE_SSH_KEY }}
 
     # - name: Build with Maven
     #   run: mvn -B package --file pom.xml
